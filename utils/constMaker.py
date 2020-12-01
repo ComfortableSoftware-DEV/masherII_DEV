@@ -6,44 +6,128 @@
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 
 
-CMAX_DICTKEYDEF
-CMAX_LAMBDADEF
-CMAX_VALDEF
-CMAX_CONSTSTRDEF
-CMAX_CONSTVALDEF
-CMAX_CONSTBINDEF
-CMAX_CONSTHEXDEF
-CMAX_IEDEF
-CMAXPROF_DICTKEYDEF
-CMAXPROF_VALDEF
-CMAXPROF_AXDEF
+CMAX_CONSTBINDEF = "CMAX_CONSTBINDEF"  # (1) both at the top, define a binary, not currently used, or planned, may be eliminated
+CMAX_CONSTHEXDEF = "CMAX_CONSTHEXDEF"  # (1) both at the top, define a binary, not currently used, or planned, may be eliminated
+CMAX_CONSTSTRDEF = "CMAX_CONSTSTRDEF"  # (1) both at the top, define a string, will be "" ed
+CMAX_CONSTTYPEDEF = "CMAX_CONSTTYPEDEF" # (1)define a fake type used in the translation dict <name><action><type><comment>
+CMAX_CONSTVALDEF = "CMAX_CONSTVALDEF"  # (1) both at the top, will not be "" ed
+CMAX_DICTDEF = "CMAX_DICTDEF"  # (5) define a dictionary <name><action><comment>
+CMAX_DICTKEYDEF = "CMAX_DICTKEYDEF"  # (3) define a dictionary key <name> = "<name>"
+CMAX_DICTSTR = "CMAX_DICTSTR"  # define a dict value <name><action><dict>"<str>"<comment>
+CMAX_DICTVAL = "CMAX_DICTVAL"  # define a dict value <name><action><dict><value><comment>
+CMAX_IEDEF = "CMAX_IEDEF"  # (4) define an IE entry to dispatch <name><action><comment>
+CMAX_LAMBDADEF = "CMAX_LAMBDADEF"  # (2) define a lambda function <name><action><value><comment>
+CMAX_STRDEF = "CMAX_STRDEF"  # (2) define a string <name> = "<value>"
+CMAX_VALDEF = "CMAX_VALDEF"  # (2) define a value <name> = <value> <name><action><value><comment>
+CMAXCM_AXDEF = "CMAXCM_AXDEF"  # define a new CM action <name><action><comment>
+CMAXCM_DICTDEF = "CMAXCM_DICTDEF"  # define a CM dict <name><action><comment>
+CMAXCM_VALDEF = "CMAXCM_VALDEF"  # define a CM value <name><action><comment>
+CMAXPROF_AXDEF = "CMAXPROF_AXDEF"  # define a profile action <name><action><comment>
+CMAXPROF_DICTKEYDEF = "CMAXPROF_DICTKEYDEF"  # define a profile dict key <name><action><comment>
+CMAXPROF_VALDEF = "CMAXPROF_VALDEF"  # define a profile value <name><action><value><comment>
+OBJMODE_CLASS = "OBJMODE_CLASS"  # dict key for class internal []{}
+OBJMODE_STANDALONE = "OBJMODE_STANDALONE"  # dict key for standalone []{}
+OBJMODE_STANDALONECLASS = "OBJMODE_STANDALONECLASS"  # dict key for a dict that is it's own class
+OBJMODE_TAB1 = "OBJMODE_TAB1"  # dict key for a []{} with a tab leading everything
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 # just the constMaker stuff that is managed in TBGLST
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
-
+CM_CMCONSTDICT = {}
+CM_CMAXDICT = {}
 
 
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 # NAME, ACTION, PARAMS, COMMENT
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 TBGLST = [
-	("ABS_HAT0X", CMAX_DICTKEYDEF,),
-	("ABS_HAT0Y", CMAX_DICTKEYDEF,),
-	("ABS_RZ", CMAX_DICTKEYDEF,),
-	("ABS_X", CMAX_DICTKEYDEF,),
-	("ABS_Y", CMAX_DICTKEYDEF,),
-	("ABS_Z", CMAX_DICTKEYDEF,),
-	("ABSDEADWIDTH", CMAX_DICTKEYDEF),
-	("ABSMAX", CMAX_DICTKEYDEF,),
-	("ABSMAXVAL", CMAX_VALDEF, "0XFFFFFFFFFFFFFFFF",),
-	("ABSMIN", CMAX_DICTKEYDEF,),
-	("ABSMINVAL", CMAX_VALDEF, "-0XFFFFFFFFFFFFFFFF",),
-	("ABSZERO", CMAX_DICTKEYDEF,),
+	("_EMPTY_DICT_", CMAX_VALDFN, "{}", "an empty dictionary"),
+	("_EMPTY_LIST_", CMAX_VALDFN, "[]", "an empty list"),
+	("_EMPTY_STR_", CMAX_VALDFN, """", "an empty string"),
+	("_EMPTY_TUPLE_", CMAX_VALDFN, "()", "empty tuple"),
+	("ABS_HAT0X", CMAX_DICTKEYDEF, "key for hat 0 X, the first, or only hat on the device",),
+	("ABS_HAT0Y", CMAX_DICTKEYDEF, "key for hat 0 Y, the first, or only hat on the device",),
+	("ABS_RZ", CMAX_DICTKEYDEF, "key for stick 1 Y",),
+	("ABS_X", CMAX_DICTKEYDEF, "key for stick 0 X",),
+	("ABS_Y", CMAX_DICTKEYDEF, "key for stick 0 Y",),
+	("ABS_Z", CMAX_DICTKEYDEF, "key for stick 1 X",),
+	("ABSDEADWIDTH", CMAX_DICTKEYDEF, "key for stick dead width",),
+	("ABSMAX", CMAX_DICTKEYDEF, "key for stick max",),
+	("ABSMAXVAL", CMAX_VALDEF, "0XFFFFFFFFFFFFFFFF", "key for stick max val",),
+	("ABSMIN", CMAX_DICTKEYDEF, "key for stick min",),
+	("ABSMINVAL", CMAX_VALDEF, "-0XFFFFFFFFFFFFFFFF", "key for min stick val",),
+	("ABSZERO", CMAX_DICTKEYDEF, "stick center/resting position key",),
 	("ABSZEROVAL", CMAX_VALDEF, "0X0000000000000000",),
-	("BIN32", CMAX_LAMBDADEF, """X: f"{X:032b}" """, "32 BIT BINARY STRING IS RETURNED",),
-	("BTNS00", CMAX_VALDEF, "0B00000001",),
+	("ARRAY_", CMAX_TYPEDEF, "list", "list or array, adjust for language",),
+	("AX_", CMAX_TYPEDEF, "AX_", "action involving a common key combination like ALT-D CTRL-W",),
+	("AX_ALTC", CMAXPROF_AXDEF, "ALT-C",),
+	("AX_ALTD", CMAXPROF_AXDEF, "ALT-D",),
+	("AX_ALTTAB", CMAXPROF_AXDEF, "ALT-TAB",),
+	("AX_CRSRDN", CMAXPROF_AXDEF, "DOWN",),
+	("AX_CRSRLT", CMAXPROF_AXDEF, "LEFT",),
+	("AX_CRSRRT", CMAXPROF_AXDEF, "RIGHT",),
+	("AX_CRSRUP", CMAXPROF_AXDEF, "UP",),
+	("AX_CTRLQ", CMAXPROF_AXDEF, "CTRL-Q",),
+	("AX_CTRLS", CMAXPROF_AXDEF, "CTRL-S",),
+	("AX_CTRLTAB", CMAXPROF_AXDEF, "CTRL-TAB",),
+	("AX_CTRLW", CMAXPROF_AXDEF, "CTRL-W",),
+	("AX_DEL", CMAXPROF_AXDEF, "DEL",),
+	("AX_ENTER", CMAXPROF_AXDEF, "ENTER",),
+	("AX_ESC", CMAXPROF_AXDEF, "ESC",),
+	("AX_F", CMAXPROF_AXDEF, "F",),
+	("AX_F5", CMAXPROF_AXDEF, "F5",),
+	("AX_F6", CMAXPROF_AXDEF, "F6",),
+	("AX_F10", CMAXPROF_AXDEF, , "comment",),
+	("AX_N", CMAXPROF_AXDEF, "N",),
+	("AX_Q", CMAXPROF_AXDEF, "Q",),
+	("AX_SHIFTTAB", CMAXPROF_AXDEF, "ALT-SHIFT-TAB",),
+	("AX_SHIFTX", CMAXPROF_AXDEF, "SHIFT-X",),
+	("AX_SPACE", CMAX_AXDEF, "SPACE",),
+	("AX_TAB", CMAXPROF_AXDEF, "TAB",),
+	("AX_Y", CMAXPROF_AXDEF, "Y",),
+	("AXDSKTP1", CMAXPROF_AXDEF, "desktop #1",),
+	("AXDSKTP2", CMAXPROF_AXDEF, "desktop #2",),
+	("AXDSKTP3", CMAXPROF_AXDEF, "desktop #3",),
+	("AXDSKTP4", CMAXPROF_AXDEF, "desktop #4",),
+	("AXGIMPOVWRT", CMAXPROF_AXDEF, "GIMP overwrite imported file",),
+	("AXHRHWLDN", CMAXPROF_AXDEF, "high rez wheel DOWN",),
+	("AXHRHWLLT", CMAXPROF_AXDEF, "high rez wheel LEFT",),
+	("AXHRHWLRT", CMAXPROF_AXDEF, "high rez wheel RIGHT",),
+	("AXHRHWLUP", CMAXPROF_AXDEF, "high rez wheel UP",),
+	("AXMCCOPY", CMAXPROF_AXDEF, "MC copy F5, ENTER",),
+	("AXMCDEL", CMAXPROF_AXDEF, "MC del F8, ENTER",),
+	("AXMCMOVE", CMAXPROF_AXDEF, "MC move F6, ENTER",),
+	("AXMCSEL", CMAXPROF_AXDEF, "MC select INS",),
+	("AXMSEBTNBAK", CMAXPROF_AXDEF, "MSE BTN BAK",),
+	("AXMSEBTNFWD", CMAXPROF_AXDEF, "MSE BTN FWD",),
+	("AXMSEBTNLT", CMAXPROF_AXDEF, "MSE BTN LEFT",),
+	("AXMSEBTNMID", CMAXPROF_AXDEF, "MSE BTN MIDDLE",),
+	("AXMSEBTNRT", CMAXPROF_AXDEF, "MSE BTN RIGHT",),
+	("AXMSEBTNSIDE", CMAXPROF_AXDEF, "MSE BTN SIDE",),
+	("AXMSEBTNTASK", CMAXPROF_AXDEF, "MSE BTN TASK",),
+	("AXMSEDN", CMAXPROF_AXDEF, "MSE DOWN",),
+	("AXMSELT", CMAXPROF_AXDEF, "MSE LEFT",),
+	("AXMSERT", CMAXPROF_AXDEF, "MSE RIGHT",),
+	("AXMSEUP", CMAXPROF_AXDEF, "MSE UP",),
+	("AXPROFAXDEF", CMAXPROF_AXDEF, "PROF define AX",),
+	("AXPROFDICTKEY", CMAXPROF_AXDEF, "PROF define DICT KEY",),
+	("AXSAVE", CMAXPROF_AXDEF, "save CTRL-S",),
+	("AXWHLDN", CMAXPROF_AXDEF, "wheel DOWN",),
+	("AXWHLLT", CMAXPROF_AXDEF, "wheel LEFT",),
+	("AXWHLRT", CMAXPROF_AXDEF, "wheel RIGHT",),
+	("AXWHLUP", CMAXPROF_AXDEF, "wheel UP",),
+	("AXXNVCOPY", CMAXPROF_AXDEF, "XnViewer COPY ALT-C",),
+	("AXXNVCROP", CMAXPROF_AXDEF, "XnViewer CROP SHIFT-X",),
+	("AXXNVFLIPH", CMAXPROF_AXDEF, "XnViewer FLIP horizontal ALT-F",),
+	("AXXNVMOVE", CMAXPROF_AXDEF, "XnViewer MOVE ALT-M",),
+	("AXXNVROTLT", CMAXPROF_AXDEF, "XnViewer ROT LEFT CTRL-SHIFT-L",),
+	("AXXNVROTRT", CMAXPROF_AXDEF, "XnViewer ROT RIGHT CTRL-SHIFT-R",),
+	("AXXNVSEL2TOP", CMAXPROF_AXDEF, "XnViewer SELECT to top SHIFT-HOME, SHIFT-RIGHT",),
+	("BIN32", CMAX_LAMBDADEF, """X: f"{X:032b}" """, "INT IN returns 32BIT binary STR",),
+	("BKQT", CMAX_STRDEF, "`", "BACK TICK",),
+	("BKSLSH", CMAX_STRDEF, "\\\\", "BACKSLASH",),
+	("BTNS00", CMAX_VALDEF, "0B00000001", "FLAG LD.EV_KEY holdable shift keys BTN0 on ",),
 	("BTNS05", CMAX_VALDEF, "0B00000010",),
 	("BTNS06", CMAX_VALDEF, "0B00000100",),
 	("BTNS07", CMAX_VALDEF, "0B00001000",),
@@ -52,6 +136,35 @@ TBGLST = [
 	("BTNS23", CMAX_VALDEF, "0B01000000",),
 	("BTNS24", CMAX_VALDEF, "0B10000000",),
 	("BUTTONSNOT", CMAX_VALDEF, "0B00000000",),
+	("CBRCE", CMAX_STRDEF, "}",),
+	("CBRKT", CMAX_STRDEF, "]",),
+	("CHR_", CMAX_TYPEDEF, "varchar", "character",),
+	("CMAX_CONSTSTRDEF", CMAXCM_AXDEF, "define a string (1) <name><action><value><comment>",),
+	("CMAX_CONSTVALDEF", CMAXCM_AXDEF, "define a value (1) <name><action>"),
+	("CMAX_DICTDEF", CMAX_AXDEF, "define a C dict <name><action><parms><comment>",),
+	("CMAX_DICTKEYDEF", CMAXCM_AXDEF, "define a dict key (2) <name><action><comment>",),
+	("CMAX_IEDEF", CMAXCM_AXDEF, "define an IE entry (3) <name><action><IEstr><value><comment>",),
+	("CMAX_LAMBDADEF", CMAXCM_AXDEF, "",),
+	("CMAX_VALDEF", CMAXCM_AXDEF,),
+	("CMAXCM_AXDEF", CMAXCM_AXDEF,),
+	("CMAXCM_DICTDEF", CMAXCM_AXDEF, "define a dict for CM"),
+	("CMAXCM_VALDEF", CMAXCM_AXDEF, "define a CM AX",),
+	("CMAXPROF_AXDEF", CMAXCM_AXDEF,),
+	("CMAXPROF_DICTKEYDEF", CMAXCM_AXDEF,),
+	("CMAXPROF_VALDEF", CMAXCM_AXDEF,),
+	("CM_CONSTDICT", CMAXCM_DICTDEF, "hold the 1st section contstants",),
+	("CM_TYPEDICT", CMAXCM_DICTDEF, "hold the types",),
+	("CM_VALDICT", CMAXCM_DICTDEF, "hold the val stuffs",),
+	("CM_DICTDICT", CMAXCM_DICTDEF, "hold the C dict entries",),
+	("CM_IEDICT", CMAXCM_DICTDEF, "hold the IE entries",),
+	("CM_STRDICT", CMAXCM_DICTDEF, "hold the str entries",),
+	("CM_LAMBDADICT", CMAXCM_DICTDEF, "hold the lambda entries",),
+	("CONST_", CMAX_TYPEDEF, "CONST_", "constant in all uses",),
+	("CPAREN", CMAX_STRDEF, ")",),
+	("DATETIME", CMAX_TYPEDEF, "datetime",),
+	("DBLQT", CMAX_STRDEF, '\\"',),
+	("DEC", CMAX_TYPEDEF, "decimal",),
+	("DECIMAL", CMAX_TYPEDEF, "decimal",),
 	("DEVICEABSSTATUS", CMAX_DICTKEYDEF,),
 	("DEVICEBUTTONSSTATUS", CMAX_DICTKEYDEF,),
 	("DEVICEENABLED", CMAX_DICTKEYDEF,),
@@ -68,6 +181,8 @@ TBGLST = [
 	("DEVICEREPEATNEXTTIME", CMAX_DICTKEYDEF,),
 	("DEVICEREPEATNEXTTIMEDELTA", CMAX_DICTKEYDEF,),
 	("DEVICETYPE", CMAX_DICTKEYDEF,),
+	("DFN_", CMAX_TYPEDEF, "DFN_", "define in all uses",),
+	("DICT", CMAX_TYPEDEF, "dict",),
 	("DIRDN", CMAX_VALDEF, "0B0100",),
 	("DIRDNLT", CMAX_VALDEF, "0B1100",),
 	("DIRDNLTMSK", CMAX_VALDEF, "0B0011",),
@@ -86,7 +201,17 @@ TBGLST = [
 	("DIRUPMSK", CMAX_VALDEF, "0B1110",),
 	("DIRUPRT", CMAX_VALDEF, "0B0011",),
 	("DIRUPRTMSK", CMAX_VALDEF, "0B1100",),
+	("DQTSTR", CMAX_STRDEF, '\\"',),
+	("EMPTY_STR_LIST", CMAX_VALDFN, """[None, "", '"', '""', "'", "''", "`", "None", "\\r", "\\n", "\\r\\n", "\\n\\r", ]""",),
 	("ERRORNOT", CMAX_VALDEF, "0X00000000",),
+	("FLD_", CMAX_TYPEDEF, "varchar", "field name",),
+	("FLOAT", CMAX_TYPEDEF, "float",),
+	("FOLD0ENDHERE", CMAX_VALDFN, '"# fold here " + "⟰" * 150',),
+	("FOLD0STARTHERE", CMAX_VALDFN, '"# fold here " + "⟱" * 150',),
+	("FOLD1ENDHERE", CMAX_VALDFN, '"# fold here " + "⥣" * 150',),
+	("FOLD1STARTHERE", CMAX_VALDFN, '"# fold here " + "⥥" * 150',),
+	("FOLD2ENDHERE", CMAX_VALDFN, '"# fold here " + "⨇" * 150',),
+	("FOLD2STARTHERE", CMAX_VALDFN, '"# fold here " + "⨈" * 150',),
 	("HATMAX", CMAX_VALDEF, "1",),
 	("HATMID", CMAX_VALDEF, "0",),
 	("HATMIN", CMAX_VALDEF, "-1",),
@@ -94,6 +219,11 @@ TBGLST = [
 	("HEX16", CMAX_LAMBDADEF, """X: f"{X:04H}" ""","16 BIT HEX STRING",),
 	("HEX32", CMAX_LAMBDADEF, """X: f"{X:08H}" ""","32 BIT HEX STRING",),
 	("HEX64", CMAX_LAMBDADEF, """X: f"{X:016H}" ""","64 BIT HEX STRING",),
+	("IMPORTANTSTR", CMAX_VALDFN, f"""'# * ' + "!-" * {CMNTLNLEN}""",),
+	("INDENTIN", CMAX_VALDFN, '" -=> "',),
+	("INDENTOUT", CMAX_VALDFN, '" <=- "',),
+	("INFOSTR", CMAX_VALDFN, f'''"# * " + "%_" * {CMNTLNLEN}''',),
+	("INT", CMAX_TYPEDEF, "int",),
 	("JOYSTICKDEAD", CMAX_VALDEF, "100",),
 	("JOYSTICKMAX", CMAX_VALDEF, "255",),
 	("JOYSTICKMID", CMAX_VALDEF, "128",),
@@ -584,10 +714,14 @@ TBGLST = [
 	("KBDZHLD", CMAX_IEDEF, "LD.EV_KEY.KEY_Z", "KEYHLD",),
 	("KBDZPRS", CMAX_IEDEF, "LD.EV_KEY.KEY_Z", "KEYPRS",),
 	("KBDZRLS", CMAX_IEDEF, "LD.EV_KEY.KEY_Z", "KEYRLS",),
+	("KEY", CMAX_TYPEDEF, "key",),
 	("KEYHLD", CMAX_VALDEF, "0X02",),
 	("KEYPRS", CMAX_VALDEF, "0X01",),
 	("KEYPRSHLD", CMAX_VALDEF, "0X03",),
 	("KEYRLS", CMAX_VALDEF, "0X00",),
+	("LIST", CMAX_TYPEDEF, "list",),
+	("LST_", CMAX_TYPEDEF, "LST", "list in all uses",),
+	("META_", CMAX_TYPEDEF, "metadata", "metadata in all uses",),
 	("MOUSEDISTANCE", CMAX_VALDEF, "1", "how far to move the mouse per event",),
 	("MSEBAKBTNHLD", CMAX_IEDEF, "LD.EV_KEY.BTN_BAK", "KEYHLD",),
 	("MSEBAKBTNPRSHLD", CMAX_IEDEF, "LD.EV_KEY.BTN_BAK", "KEYPRSHLD",),
@@ -633,6 +767,13 @@ TBGLST = [
 	("MSEXTRABTNPRSD", CMAX_IEDEF, "LD.EV_KEY.BTN_EXTRA", "KEYPRS",),
 	("MSEXTRABTNPRSHLDD", CMAX_IEDEF, "LD.EV_KEY.BTN_EXTRA", "KEYPRSHLD",),
 	("MSEXTRABTNRLS", CMAX_IEDEF, "LD.EV_KEY.BTN_EXTRA", "KEYRLS",),
+	("NEWLINE", CMAX_STRDEF, "\\n",),
+	("NTAB", CMAX_VALDFN, 'lambda NUM: "\\t" * NUM',),
+	("NUM_", CMAX_TYPEDEF, "number", "number in all uses",),
+	("OBRCE", CMAX_STRDEF, "{",),
+	("OBRKT", CMAX_STRDEF, "[",),
+	("OPAREN", CMAX_STRDEF, "(",),
+	("QT_SET", CMAX_VALDFN, """['"', "'", "`"]""",),
 	("REL_DIAL", CMAX_DICTKEYDEF,),
 	("REL_HWHEEL_HI_RES", CMAX_DICTKEYDEF,),
 	("REL_HWHEEL", CMAX_DICTKEYDEF,),
@@ -647,11 +788,28 @@ TBGLST = [
 	("RELZERO", CMAX_DICTKEYDEF,),
 	("RELZEROVAL", CMAX_VALDEF, "0",),
 	("REPEATNOT", CMAX_VALDEF, "0X00000000",),
+	("STR_", CMAX_TYPEDEF, "varchar",),
 	("SYNREPORT", CMAX_IEDEF, "LD.EV_SYN.SYN_REPORT", "0",),
+	("TABSTR", CMAX_STRDEF, "\\t",),
+	("TRIQT", CMAX_VALDFN, "DBLQT + DBLQT + DBLQT",),
+	("TUP", CMAX_TYPEDEF, "tuple",),
+	("TUPLE", CMAX_TYPEDEF, "tuple",),
+	("TYPE_", CMAX_TYPEDEF, "type", "type in all uses",),
+	("TYPES_", CMAX_TYPEDEF, "types", "types in all uses",),
 	("VALUE_S", CMAX_DICTKEYDEF,),
 	("WHEELDISTANCE", CMAX_VALDEF, "1","how many clicks of the wheel per event",),
-
 ]
+
+
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+# END OF TBGLST
+# #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
+
+
+def makeADict(dictName, dictKeys, dictVals, comments, objectMode):
+	retStr = ""
+	retStr += f"""{dictName} =
+"""
 
 
 
