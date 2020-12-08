@@ -12,9 +12,6 @@ from dataStuff import constants as C
 # #*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#*#
 
 
-
-
-
 AX_ALTD = "AX_ALTD"
 AX_CTRLQ = "AX_CTRLQ"
 AX_CTRLS = "AX_CTRLS"
